@@ -1,6 +1,6 @@
 # json-cycle
 
-[![Join the chat at https://gitter.im/valery-barysok/sails-hook-dev-spirit][gitter-join-chat-image]][gitter-channel-url]
+[![Join the chat at https://gitter.im/valery-barysok/json-cycle][gitter-join-chat-image]][gitter-channel-url]
 [![NPM Version][npm-version-image]][npm-url]
 [![NPM Downloads][npm-downloads-image]][npm-url]
 [![Node.js Version][node-image]][node-url]
@@ -18,7 +18,7 @@ Based on [JSON-js](https://github.com/douglascrockford/JSON-js)
 
 ## Install
 
-In your Sails project:
+In your project:
 
 ```
 npm install json-cycle --save
