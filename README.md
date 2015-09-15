@@ -24,6 +24,13 @@ In your Sails project:
 npm install json-cycle --save
 ```
 
+## Details
+
+This package contains two functions, decycle and retrocycle,
+which make it possible to encode cyclical structures and convert them to JSON, and
+then recover them. This is a capability that is not provided by ES5. JSONPath 
+is used to represent the links. [http://GOESSNER.net/articles/JsonPath/]
+
 ## License
 MIT &copy; 2015 Valery Barysok, Douglas Crockford
 
