@@ -1,13 +1,17 @@
 {
   "name": "json-cycle",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Encode/decode circular structures for converting to and from JSON.",
   "keywords": [
     "json",
     "cycle",
     "stringify",
     "parse",
-    "circular"
+    "circular",
+    "recursive",
+    "circular",
+    "reference",
+    "recursion"
   ],
   "main": "cycle.js",
   "private": false,
