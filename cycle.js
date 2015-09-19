@@ -26,22 +26,6 @@ module.exports = {
 
   decycle: function decycle(object) {
 
-// Make a deep copy of an object or array, assuring that there is at most
-// one instance of each object or array in the resulting structure. The
-// duplicate references (which might be forming cycles) are replaced with
-// an object of the form
-//      {$ref: PATH}
-// where the PATH is a JSONPath string that locates the first occurrence.
-// So,
-//      var a = [];
-//      a[0] = a;
-//      return JSON.stringify(JSON.decycle(a));
-// produces the string '[{"$ref":"$"}]'.
-
-// JSONPath is used to locate the unique object. $ indicates the top level of
-// the object or array. [NUMBER] or [STRING] indicates a child member or
-// property.
-
     var objects = [],   // Keep a reference to each unique object or array
         paths = [];     // Keep the path to each unique object or array
 
@@ -56,7 +40,7 @@ module.exports = {
 // typeof null === 'object', so go on if this value is really an object but not
 // one of the weird builtin objects.
 
-      if (typeof value === 'object' && value !== null && !(value instanceof Boolean) && !(value instanceof Date) && !(value instanceof Number) && !(value instanceof RegExp) && !(value instanceof String)) {
+      if (typeof value === 'object' && value !== null) {
 
 // If the value is an object or array, look to see if we have already
 // encountered it. If so, return a $ref/path object. This is a hard way,
@@ -99,25 +83,6 @@ module.exports = {
   },
 
   retrocycle: function retrocycle($) {
-
-// Restore an object that was reduced by decycle. Members whose values are
-// objects of the form
-//      {$ref: PATH}
-// are replaced with references to the value found by the PATH. This will
-// restore cycles. The object will be mutated.
-
-// The eval function is used to locate the values described by a PATH. The
-// root object is kept in a $ variable. A regular expression is used to
-// assure that the PATH is extremely well formed. The regexp contains nested
-// * quantifiers. That has been known to have extremely bad performance
-// problems on some browsers for very long strings. A PATH is expected to be
-// reasonably short. A PATH is allowed to belong to a very restricted subset of
-// Goessner's JSONPath.
-
-// So,
-//      var s = '[{"$ref":"$"}]';
-//      return JSON.retrocycle(JSON.parse(s));
-// produces an array containing a single element which is the array itself.
 
     var px = /^\$(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/;
 

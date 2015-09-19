@@ -168,8 +168,7 @@ describe('Json Cycle', function () {
     });
   });
 
-  it('should be the the same after retrocycling on decycled structure', function (done) {
-
+  it('should be the same after retrocycling on decycled structure', function (done) {
     expect(arr).to.deep.equal(retrocycle(decycle(arr)));
 
     done();
