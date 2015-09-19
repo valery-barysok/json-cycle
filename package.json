@@ -1,6 +1,6 @@
 {
   "name": "json-cycle",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Encode/decode circular structures for converting to and from JSON.",
   "keywords": [
     "json",
@@ -26,7 +26,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js"
+    "cycle.js"
   ],
   "author": "Valery Barysok <valery.barysok@gmail.com>",
   "contributors": [
