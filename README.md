@@ -42,8 +42,7 @@ If you stringify javascript structure and then parse it back in some cases you c
 
 ### decycle(object)
 
-**Note** `decycle` function makes a deep copy of any provided structure while original `decycle` function
- from [JSON-js][jsonjs-url] does not make copy for `Boolean`, `Date`, `Number`, `RegExp` and `String` objects.
+> Note: `decycle` function makes a deep copy of any provided structure while original `decycle` function from [JSON-js][jsonjs-url] does not make copy for `Boolean`, `Date`, `Number`, `RegExp` and `String` objects.
 
 Makes a deep copy of an provided structure with resolving all circular references.
 The duplicate references which part of an cycle are replaced with an object of the form
@@ -55,7 +54,6 @@ where the PATH is a JSONPath string that locates the first occurrence.
 Example:
 
 ```js
-
     jc = require('json-cycle');
     var a = {};
     a.self = a;
@@ -65,7 +63,6 @@ Example:
 Output:
 
 ```js
-
     {{"$ref":"$"}}
 ```
 
@@ -92,7 +89,6 @@ Goessner's JSONPath.
 Example:
 
 ```js
-
     jc = require('json-cycle');
     var s = '{{"$ref":"$"}}';
     jc.retrocycle(JSON.parse(s));
@@ -101,7 +97,6 @@ Example:
 Output:
 
 ```js
-
     produced object equals to 
     var a = {};
     a.self = a;
