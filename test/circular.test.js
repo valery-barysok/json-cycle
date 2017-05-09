@@ -173,4 +173,28 @@ describe('Json Cycle', function () {
 
     done();
   });
+
+  describe('prototype', function() {
+    class Baz {
+      constructor() {
+        this.bar = 'bar';
+      }
+
+      toJSON() {
+        return this.bar;
+      }
+    }
+
+    var foo = {
+      baz: new Baz(),
+    };
+
+    it('should preserve prototype', function() {
+      expect(Object.getPrototypeOf(decycle(foo).baz).constructor).to.equal(Baz);
+    });
+
+    it('toJSON should be working', function() {
+      expect(JSON.stringify(decycle(foo))).to.equal('{"baz":"bar"}');
+    });
+  });
 });

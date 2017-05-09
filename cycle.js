@@ -17,7 +17,7 @@
 
 /*jslint eval, for */
 
-/*property 
+/*property
  $ref, apply, call, decycle, hasOwnProperty, length, prototype, push,
  retrocycle, stringify, test, toString
  */
@@ -68,7 +68,7 @@ module.exports = {
 
 // If it is an object, replicate the object.
 
-          nu = {};
+          nu = Object.create(Object.getPrototypeOf(value));
           for (name in value) {
             if (Object.prototype.hasOwnProperty.call(value, name)) {
               nu[name] = derez(value[name],
