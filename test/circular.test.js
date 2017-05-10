@@ -173,4 +173,22 @@ describe('Json Cycle', function () {
 
     done();
   });
+
+  it('toJSON should have been called', function() {
+    class Baz {
+      constructor() {
+        this.bar = 'bar';
+      }
+
+      toJSON() {
+        return this.bar;
+      }
+    }
+
+    var foo = {
+      baz: new Baz(),
+    };
+
+    expect(JSON.stringify(decycle(foo))).to.equal('{"baz":"bar"}');
+  });
 });
