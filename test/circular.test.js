@@ -175,19 +175,19 @@ describe('Json Cycle', function () {
   });
 
   it('toJSON should have been called', function() {
-      class Baz {
-        constructor() {
-          this.bar = 'bar';
-        }
-
-        toJSON() {
-          return this.bar;
-        }
+    class Baz {
+      constructor() {
+        this.bar = 'bar';
       }
 
-      var foo = {
-        baz: new Baz(),
-      };
+      toJSON() {
+        return this.bar;
+      }
+    }
+
+    var foo = {
+      baz: new Baz(),
+    };
 
     expect(JSON.stringify(decycle(foo))).to.equal('{"baz":"bar"}');
   });
