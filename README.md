@@ -10,8 +10,6 @@
 [![devDependency Status][dev-dependencies-image]][dev-dependencies-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
-[![NPM][npm-image]][npm-url]
-
 Utilities provide ability to encode/decode circular structures for converting to and from JSON.
 
 Based on [JSON-js][jsonjs-url]
@@ -108,7 +106,6 @@ MIT &copy; 2015 Valery Barysok, Douglas Crockford
 
 [npm-version-image]: https://img.shields.io/npm/v/json-cycle.svg?style=flat-square
 [npm-downloads-image]: https://img.shields.io/npm/dm/json-cycle.svg?style=flat-square
-[npm-image]: https://nodei.co/npm/json-cycle.png?downloads=true&downloadRank=true&stars=true
 [npm-url]: https://npmjs.org/package/json-cycle
 [travis-image]: https://img.shields.io/travis/valery-barysok/json-cycle/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/valery-barysok/json-cycle
