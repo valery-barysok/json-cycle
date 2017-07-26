@@ -24,19 +24,19 @@ npm install json-cycle --save
 
 ## Details
 
-This package contains two functions, decycle and retrocycle,
+This package contains four functions, decycle, retrocycle, stringify and parse,
 which make it possible to encode cyclical structures and convert them to JSON, and
 then recover them. This is a capability that is not provided by ES5. JSONPath 
 is used to represent the links. [http://GOESSNER.net/articles/JsonPath/]
 
-## Warnings
-
-If you stringify javascript structure and then parse it back in some cases you can get not the same javascript structure. For instance, if it contains Date object you get String form of it.
+> Note: If you stringify javascript structure and then parse it back in some cases you can get not the same javascript structure. For instance, if it contains Date object you get String form of it.
 
 ## Methods
 
 - [decycle](#decycle)
 - [retrocycle](#retrocycle)
+- [stringify](#stringify)
+- [parse](#parse)
 
 ### decycle(object)
 
@@ -76,7 +76,7 @@ objects of the form
 are replaced with references to the value found by the PATH. This will
 restore cycles. **The object will be mutated**.
 
-**Note** The eval function is used to locate the values described by a PATH. The
+> Note: The eval function is used to locate the values described by a PATH. The
 root object is kept in a $ variable. A regular expression is used to
 assure that the PATH is extremely well formed. The regexp contains nested
 * quantifiers. That has been known to have extremely bad performance
@@ -100,9 +100,16 @@ Output:
     a.self = a;
 ```
 
+### stringify(object)
+
+It equals to `JSON.stringify(decycle(object))`
+
+### parse(object)
+
+It equals to `retrocycle(JSON.parse(object))`
 
 ## License
-MIT &copy; 2015 Valery Barysok, Douglas Crockford
+MIT &copy; 2015-... Valery Barysok, Douglas Crockford
 
 [npm-version-image]: https://img.shields.io/npm/v/json-cycle.svg?style=flat-square
 [npm-downloads-image]: https://img.shields.io/npm/dm/json-cycle.svg?style=flat-square
