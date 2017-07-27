@@ -5,6 +5,8 @@ var expect = chai.expect;
 var cycle = require('../');
 var decycle = cycle.decycle;
 var retrocycle = cycle.retrocycle;
+var stringify = cycle.stringify;
+var parse = cycle.parse;
 
 describe('Json Cycle', function () {
 
@@ -165,6 +167,28 @@ describe('Json Cycle', function () {
       expect(function () {
         JSON.stringify(decycle(bar));
       }).to.not.throw(Error);
+    });
+  });
+
+  describe("#stringify", function () {
+    it('should not failed', function (done) {
+
+      expect(function () {
+        stringify(arr);
+      }).to.not.throw(Error);
+
+      done();
+    });
+  });
+
+  describe("#parse", function () {
+    it('should not failed', function (done) {
+      var foo = {
+        baz: "bar",
+      };
+      expect(parse('{"baz":"bar"}')).to.deep.equal(foo);
+
+      done();
     });
   });
 
