@@ -1,19 +1,14 @@
 language: node_js
 node_js:
   - "node"
-  - "4"
+  - "7"
   - "6"
+  - "4"
 sudo: false
 git:
   depth: 10
 branches:
   only:
     - master
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/7edad70ac7ee4dc6d017
-    on_success: always
-    on_failure: always
 script: "npm run-script test-ci"
 after_script: "cat ./coverage/lcov.info | coveralls"
