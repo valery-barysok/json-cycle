@@ -128,12 +128,12 @@ function retrocycle($) {
 }
 
 module.exports = {
-  stringify: function stringifyJC(object) {
-    return JSON.stringify(decycle(object))
+  stringify: function stringifyJC(object, replacer, space) {
+    return JSON.stringify(decycle(object), replacer, space)
   },
 
-  parse: function parseJC($) {
-    return retrocycle(JSON.parse($))
+  parse: function parseJC($, reviver) {
+    return retrocycle(JSON.parse($, reviver))
   },
 
   decycle: decycle,
