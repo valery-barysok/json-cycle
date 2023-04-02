@@ -22,120 +22,134 @@
  retrocycle, stringify, test, toString
  */
 
-function decycle(object) {
+/**
+ * Universal module definition https://github.com/umdjs/umd
+ */
 
-  var objects = [],   // Keep a reference to each unique object or array
-    paths = [];     // Keep the path to each unique object or array
+(function (global, factory) {
+    typeof define === 'function' && define.amd
+        ? define(factory)
+        : typeof module === 'object' && module.exports
+            ? (module.exports = factory)
+            : (global.json = factory)
+})(this, function () {
+    function decycle(object) {
+        var objects = [],   // Keep a reference to each unique object or array
+            paths = [];     // Keep the path to each unique object or array
 
-  return (function derez(value, path) {
+        return (function derez(value, path) {
+            // The derez recurses through the object, producing the deep copy.
 
-// The derez recurses through the object, producing the deep copy.
+            var i,          // The loop counter
+                name,       // Property name
+                nu;         // The new object or array
 
-    var i,          // The loop counter
-      name,       // Property name
-      nu;         // The new object or array
+            var _value = value && value.toJSON instanceof Function ? value.toJSON() : value;
+            // typeof null === 'object', so go on if this value is really an object but not
+            // one of the weird builtin objects.
 
-    var _value = value && value.toJSON instanceof Function ? value.toJSON() : value;
-// typeof null === 'object', so go on if this value is really an object but not
-// one of the weird builtin objects.
+            if (typeof _value === 'object' && _value !== null) {
+                // If the value is an object or array, look to see if we have already
+                // encountered it. If so, return a $ref/path object. This is a hard way,
+                // linear search that will get slower as the number of unique objects grows.
 
-    if (typeof _value === 'object' && _value !== null) {
+                for (i = 0; i < objects.length; i += 1) {
+                    if (objects[i] === _value) {
+                        return {$ref: paths[i]};
+                    }
+                }
 
-// If the value is an object or array, look to see if we have already
-// encountered it. If so, return a $ref/path object. This is a hard way,
-// linear search that will get slower as the number of unique objects grows.
+                // Otherwise, accumulate the unique value and its path.
 
-      for (i = 0; i < objects.length; i += 1) {
-        if (objects[i] === _value) {
-          return {$ref: paths[i]};
-        }
-      }
+                objects.push(_value);
+                paths.push(path);
 
-// Otherwise, accumulate the unique value and its path.
+                // If it is an array, replicate the array.
 
-      objects.push(_value);
-      paths.push(path);
+                if (Object.prototype.toString.apply(_value) === '[object Array]') {
+                    nu = [];
 
-// If it is an array, replicate the array.
+                    for (i = 0; i < _value.length; i += 1) {
+                        nu[i] = derez(_value[i], path + '[' + i + ']');
+                    }
+                } else {
 
-      if (Object.prototype.toString.apply(_value) === '[object Array]') {
-        nu = [];
-        for (i = 0; i < _value.length; i += 1) {
-          nu[i] = derez(_value[i], path + '[' + i + ']');
-        }
-      } else {
+                    // If it is an object, replicate the object.
 
-// If it is an object, replicate the object.
+                    nu = {};
 
-        nu = {};
-        for (name in _value) {
-          if (Object.prototype.hasOwnProperty.call(_value, name)) {
-            nu[name] = derez(_value[name],
-              path + '[' + JSON.stringify(name) + ']');
-          }
-        }
-      }
-      return nu;
-    }
-    return _value;
-  }(object, '$'));
-}
+                    for (name in _value) {
+                        if (Object.prototype.hasOwnProperty.call(_value, name)) {
+                            nu[name] = derez(_value[name],
+                            path + '[' + JSON.stringify(name) + ']');
+                        }
+                    }
+                }
 
-function retrocycle($) {
-
-  var px = /^\$(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/;
-
-  (function rez(value) {
-
-// The rez function walks recursively through the object looking for $ref
-// properties. When it finds one that has a value that is a path, then it
-// replaces the $ref object with a reference to the value that is found by
-// the path.
-
-    var i, item, name, path;
-
-    if (value && typeof value === 'object') {
-      if (Object.prototype.toString.apply(value) === '[object Array]') {
-        for (i = 0; i < value.length; i += 1) {
-          item = value[i];
-          if (item && typeof item === 'object') {
-            path = item.$ref;
-            if (typeof path === 'string' && px.test(path)) {
-              value[i] = eval(path);
-            } else {
-              rez(item);
+                return nu;
             }
-          }
-        }
-      } else {
-        for (name in value) {
-          if (typeof value[name] === 'object') {
-            item = value[name];
-            if (item) {
-              path = item.$ref;
-              if (typeof path === 'string' && px.test(path)) {
-                value[name] = eval(path);
-              } else {
-                rez(item);
-              }
-            }
-          }
-        }
-      }
+
+            return _value;
+        }(object, '$'));
     }
-  }($));
-  return $;
-}
 
-module.exports = {
-  stringify: function stringifyJC(object, replacer, space) {
-    return JSON.stringify(decycle(object), replacer, space)
-  },
+    function retrocycle($) {
+        var px = /^\$(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/;
 
-  parse: function parseJC($, reviver) {
-    return retrocycle(JSON.parse($, reviver))
-  },
+        (function rez(value) {
+        // The rez function walks recursively through the object looking for $ref
+        // properties. When it finds one that has a value that is a path, then it
+        // replaces the $ref object with a reference to the value that is found by
+        // the path.
 
-  decycle: decycle,
-  retrocycle: retrocycle,
-};
+            var i, item, name, path;
+
+            if (value && typeof value === 'object') {
+                if (Object.prototype.toString.apply(value) === '[object Array]') {
+                    for (i = 0; i < value.length; i += 1) {
+                        item = value[i];
+
+                        if (item && typeof item === 'object') {
+                            path = item.$ref;
+
+                            if (typeof path === 'string' && px.test(path)) {
+                                value[i] = eval(path);
+                            } else {
+                                rez(item);
+                            }
+                        }
+                    }
+                } else {
+                    for (name in value) {
+                        if (typeof value[name] === 'object') {
+                            item = value[name];
+
+                            if (item) {
+                                path = item.$ref;
+
+                                if (typeof path === 'string' && px.test(path)) {
+                                    value[name] = eval(path);
+                                } else {
+                                    rez(item);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }($));
+
+        return $;
+    }
+
+    return {
+        decycle : decycle,
+        retrocycle : retrocycle,
+        stringify : function (object, replacer, space) {
+            return JSON.stringify(decycle(object), replacer, space)
+        },
+        parse : function ($, reviver) {
+            return retrocycle(JSON.parse($, reviver))
+        }
+    }
+}())
