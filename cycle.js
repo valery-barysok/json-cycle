@@ -44,11 +44,16 @@
                 name,       // Property name
                 nu;         // The new object or array
 
-            var _value = value && value.toJSON instanceof Function ? value.toJSON() : value;
+            var _value = value
+
+            try {
+              _value = value.toJSON()
+            } catch (error) {}
+
             // typeof null === 'object', so go on if this value is really an object but not
             // one of the weird builtin objects.
 
-            if (typeof _value === 'object' && _value !== null) {
+            if (typeof _value === 'object' && _value) {
                 // If the value is an object or array, look to see if we have already
                 // encountered it. If so, return a $ref/path object. This is a hard way,
                 // linear search that will get slower as the number of unique objects grows.
