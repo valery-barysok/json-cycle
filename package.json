@@ -1,6 +1,6 @@
 {
   "name": "json-cycle",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Encode/decode circular structures for converting to and from JSON.",
   "keywords": [
     "json",
